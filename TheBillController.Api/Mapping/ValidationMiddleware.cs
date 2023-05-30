@@ -18,11 +18,11 @@ public class ValidationMiddleware
         {
             await _next(context);
         }
-        catch (ValidationException ex)
+        catch (ValidationException vEx)
         {
             context.Response.StatusCode = 400;
             var validationFailureResponse = new ValidationFailureResponse {
-                Errors = ex.Errors.Select(x => new ValidationResponse {
+                Errors = vEx.Errors.Select(x => new ValidationResponse {
                     PropertyName = x.PropertyName,
                     Message = x.ErrorMessage
                 })

@@ -16,14 +16,16 @@ public static class EndpointUpdateExpense
             async (Guid id, UpdateExpenseRequest request, IExpenseService service) =>
             {
                 var expense = request.MapToExpense(id);
-                var updated = await service.UpdateAsync(expense!);
+                var updatedExpense = await service.UpdateAsync(expense);
 
-                if (!updated)
+                if (updatedExpense is null)
                 {
                     return Results.NotFound();
                 }
 
-                return Results.Ok();
+                var respose = updatedExpense.MapToResponse();
+
+                return TypedResults.Ok(respose);
             })
             .WithName(Name)
             .Produces(StatusCodes.Status200OK)

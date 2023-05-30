@@ -17,26 +17,28 @@ public class ExpenseService : IExpenseService
         _optionsValidator = optionsValidator;
     }
 
-    public async Task<bool> CreateAsync(Expense expense)
+    public async Task<ExpenseContent> CreateAsync(Expense expense)
     {
         await _expenseValidator.ValidateAndThrowAsync(expense);
 
-        return await _repository.CreateAsync(expense);
+        await _repository.CreateAsync(expense);
+        
+        return await _repository.GetAsync(expense.Id);
     }
 
-    public async Task<Expense?> GetAsync(Guid id)
+    public async Task<ExpenseContent?> GetAsync(Guid id)
     {
         return await _repository.GetAsync(id);
     }
 
-    public async Task<IEnumerable<Expense>> GetMoreAsync(GetMoreExpensesOptions options)
+    public async Task<IEnumerable<ExpenseContent>> GetMoreAsync(GetMoreExpensesOptions options)
     {
         await _optionsValidator.ValidateAndThrowAsync(options);
 
         return await _repository.GetMoreAsync(options);
     }
 
-    public async Task<bool> UpdateAsync(Expense expense)
+    public async Task<ExpenseContent?> UpdateAsync(Expense expense)
     {
         await _expenseValidator.ValidateAndThrowAsync(expense);
 
@@ -44,10 +46,17 @@ public class ExpenseService : IExpenseService
 
         if (existingExpense is null)
         {
-            return false;
+            return existingExpense;
         }
 
-        return await _repository.UpdateAsync(expense);
+        var updated = await _repository.UpdateAsync(expense);
+
+        if (!updated)
+        {
+            return null;
+        }
+
+        return await _repository.GetAsync(existingExpense.Id);
     }
 
     public async Task<bool> DeleteAsync(Guid id)

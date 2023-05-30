@@ -51,18 +51,19 @@ public static class ContractMapping
         };
     }
 
-    public static ExpenseResponse MapToResponse(this Expense expense)
+    public static ExpenseResponse MapToResponse(this ExpenseContent expense)
     {
         return new ExpenseResponse {
             Id = expense.Id,
             Description = expense.Description,
             DateOfExecution = expense.DateOfExecution,
             Price = expense.Price,
-            TypeId = expense.TypeId
+            TypeId = expense.TypeId,
+            TypeName = expense.TypeName
         };
     }
 
-    public static ExpensesResponse MapToResponse(this IEnumerable<Expense> expenses, int page, int pageSize, int totalCount)
+    public static ExpensesResponse MapToResponse(this IEnumerable<ExpenseContent> expenses, int page, int pageSize, int totalCount)
     {
         return new ExpensesResponse {
             Items = expenses.Select(MapToResponse),

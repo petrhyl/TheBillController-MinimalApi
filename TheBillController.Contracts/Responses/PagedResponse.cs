@@ -1,8 +1,8 @@
 ﻿namespace TheBillController.Contracts.Responses;
 
-public class ExpensesResponse : PagedResponse<ExpenseResponse>
+public abstract class PagedResponse<TResponse>
 {
-    public IEnumerable<ExpenseResponse> Items { get; init; } = Enumerable.Empty<ExpenseResponse>();
+    public IEnumerable<TResponse> Items { get; init; } = Enumerable.Empty<TResponse>();
 
     public int PageSize { get; init; }
 

@@ -11,4 +11,6 @@ public class ExpenseResponse
     public required double Price { get; init; }
 
     public required Guid TypeId { get; init; }
+
+    public required string TypeName { get; init; }
 }

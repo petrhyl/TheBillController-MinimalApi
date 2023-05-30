@@ -4,13 +4,13 @@ namespace TheBillController.Application.Services;
 
 public interface IExpenseService
 {
-    Task<bool> CreateAsync(Expense expense);
+    Task<ExpenseContent> CreateAsync(Expense expense);
 
-    Task<Expense?> GetAsync(Guid id);
+    Task<ExpenseContent?> GetAsync(Guid id);
 
-    Task<IEnumerable<Expense>> GetMoreAsync(GetMoreExpensesOptions options);
+    Task<IEnumerable<ExpenseContent>> GetMoreAsync(GetMoreExpensesOptions options);
 
-    Task<bool> UpdateAsync(Expense expense);
+    Task<ExpenseContent?> UpdateAsync(Expense expense);
 
     Task<bool> DeleteAsync(Guid id);
 

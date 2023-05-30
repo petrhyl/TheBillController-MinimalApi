@@ -16,8 +16,8 @@ public static class EndpointCreateExpense
             async (CreateExpenseRequest request, IExpenseService service) =>
             {
                 var expense = request.MapToExpense();
-                await service.CreateAsync(expense);
-                var response = expense.MapToResponse();
+                var expenseContent = await service.CreateAsync(expense);
+                var response = expenseContent.MapToResponse();
 
                 return TypedResults.CreatedAtRoute(response, EndpointGetExpense.Name, new {id = expense.Id});
             })

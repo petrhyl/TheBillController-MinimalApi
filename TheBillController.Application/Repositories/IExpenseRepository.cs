@@ -6,9 +6,9 @@ public interface IExpenseRepository
 {
     Task<bool> CreateAsync(Expense expense);
 
-    Task<Expense?> GetAsync(Guid id);
+    Task<ExpenseContent?> GetAsync(Guid id);
 
-    Task<IEnumerable<Expense>> GetMoreAsync(GetMoreExpensesOptions options);
+    Task<IEnumerable<ExpenseContent>> GetMoreAsync(GetMoreExpensesOptions options);
 
     Task<bool> UpdateAsync(Expense expense);
 
