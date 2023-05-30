@@ -7,6 +7,7 @@ namespace TheBillController.Application.Validators;
 public class GetMoreExpensesOptionsValidator : AbstractValidator<GetMoreExpensesOptions>
 {
     private readonly IExpenseTypeRepository _expenseTypeRepository;
+    private readonly IExpenseRepository _expenseRepository;
     private static readonly string[] AcceptableSortFields =
     {
         "type", "dateOfExecution", "price"
@@ -27,11 +28,14 @@ public class GetMoreExpensesOptionsValidator : AbstractValidator<GetMoreExpenses
             .WithMessage("Assigned type of the expense does not exist."); 
         RuleFor(x => x.SortBy)
             .Must(x => x is null || AcceptableSortFields.Contains(x, StringComparer.OrdinalIgnoreCase));
+        RuleFor(x => x.Page)
+            .MustAsync(ValidatePageNumber)
+            .WithMessage("Cannot get the page number. You exceeded the number of records.");
     }
 
     private bool ValidateDateFrom(GetMoreExpensesOptions options, DateTime dateFrom)
     {
-        return FunctionsToValidate.ValidateDateFrom(options, dateFrom);
+        return FunctionsToValidate.ValidateDateFrom(options);
     }
 
     private async Task<bool> ValidateTypeId(Guid? typeId, CancellationToken token = default)
@@ -42,5 +46,10 @@ public class GetMoreExpensesOptionsValidator : AbstractValidator<GetMoreExpenses
         }
 
         return await FunctionsToValidate.ValidateTypeId(_expenseTypeRepository, typeId.Value!);
+    }
+
+    private async Task<bool> ValidatePageNumber(GetMoreExpensesOptions options, int page, CancellationToken token = default)
+    {
+        return await FunctionsToValidate.ValidatePageNumber(_expenseRepository, options);
     }
 }

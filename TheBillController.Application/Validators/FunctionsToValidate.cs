@@ -29,9 +29,21 @@ internal static class FunctionsToValidate
         return true;
     }
 
-    internal static bool ValidateDateFrom(GetMoreExpensesOptions options, DateTime dateFrom)
+    internal static bool ValidateDateFrom(GetMoreExpensesOptions options)
     {
-        if (dateFrom > DateTime.UtcNow || dateFrom > options.DateTo)
+        if (options.DateFrom > DateTime.UtcNow || options.DateFrom > options.DateTo)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    internal static async Task<bool> ValidatePageNumber(IExpenseRepository expenseRepository, GetMoreExpensesOptions options)
+    {
+        var recordCount = await expenseRepository.GetCountAsync(options.DateFrom, options.DateTo, options.TypeId);
+
+        if (recordCount <= ((options.Page - 1) * options.PageSize))
         {
             return false;
         }

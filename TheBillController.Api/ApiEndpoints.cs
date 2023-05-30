@@ -14,4 +14,15 @@ public static class ApiEndpoints
         public const string Update = $"{Base}/{{id:guid}}";
         public const string Delete = $"{Base}/{{id:guid}}";
     }
+
+    public static class Expense
+    {
+        private const string Base = $"{ApiBase}/expense";
+
+        public const string Create = Base;
+        public const string Get = $"{Base}/{{id:guid}}";
+        public const string GetMore = Base;
+        public const string Update = $"{Base}/{{id:guid}}";
+        public const string Delete = $"{Base}/{{id:guid}}";
+    }
 }

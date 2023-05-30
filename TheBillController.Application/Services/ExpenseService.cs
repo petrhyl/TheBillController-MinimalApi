@@ -40,6 +40,13 @@ public class ExpenseService : IExpenseService
     {
         await _expenseValidator.ValidateAndThrowAsync(expense);
 
+        var existingExpense = await _repository.GetAsync(expense.Id);
+
+        if (existingExpense is null)
+        {
+            return false;
+        }
+
         return await _repository.UpdateAsync(expense);
     }
 
